@@ -13,11 +13,10 @@ body {
     background-size: contain;
     background-color: #f7d9df;
     font-family: Arial, sans-serif;
-    position: relative;
     overflow: hidden;
 }
 
-/* BOTÓN INVISIBLE SOBRE EL SOBRE */
+/* BOTÓN INVISIBLE */
 .boton-carta {
     position: absolute;
     width: 22vw;
@@ -28,27 +27,46 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     cursor: pointer;
+    z-index: 2;
 }
 
 /* OVERLAY */
 .overlay {
-    display: none;
-    position: absolute;
+    position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
     z-index: 5;
+}
+.overlay.activo {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* CENTRO FIJO */
+.centro {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /* SOBRE */
 .sobre {
-    display: none;
-    position: absolute;
     width: 260px;
     height: 180px;
     background: #f1f1f1;
     border-radius: 10px;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+    transition: opacity 0.4s, transform 0.4s;
     z-index: 10;
-    animation: aparecer 0.6s ease;
+}
+.sobre.activo {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .tapa {
@@ -59,6 +77,8 @@ body {
     background: #e63946;
     clip-path: polygon(0 0, 100% 0, 50% 100%);
     transform-origin: top;
+}
+.sobre.activo .tapa {
     animation: abrir 1s forwards;
 }
 
@@ -68,21 +88,25 @@ body {
 
 /* CARTA PERGAMINO */
 .carta {
-    display: none;
-    position: absolute;
-    z-index: 15;
+    width: 85%;
+    max-width: 600px;
     background: #fdf1c7;
     border: 2px solid #d4af37;
     padding: 30px;
     border-radius: 10px;
-    width: 85%;
-    max-width: 600px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-    animation: aparecer 0.8s ease;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+    transition: opacity 0.4s, transform 0.4s;
+    z-index: 15;
+}
+.carta.activo {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
 }
 
 .carta p {
-    font-family: "Georgia", serif;
+    font-family: Georgia, serif;
     color: #5a2a27;
     font-size: 16px;
     line-height: 1.6;
@@ -106,27 +130,14 @@ body {
 
 /* CORAZONES */
 .corazon {
-    position: absolute;
+    position: fixed;
+    bottom: 0;
     font-size: 20px;
     animation: flotar 4s linear forwards;
+    z-index: 20;
 }
-
 @keyframes flotar {
-    from { transform: translateY(0); opacity: 1; }
     to { transform: translateY(-100vh); opacity: 0; }
-}
-
-@keyframes aparecer {
-    from { opacity: 0; transform: scale(0.7); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-/* CENTRADO */
-.centro {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 </style>
 </head>
@@ -145,7 +156,7 @@ body {
     <button class="cerrar" onclick="cerrarCarta()">✕</button>
     <p>
 Muchos dicen: “que es mejor estar solo, que estar mal acompañado”,  
-pero contigo yo digo: "que es mejor estar bien acompañado, que estar solo."
+pero contigo yo digo: "que es mejor estar bien acompañado, que estar solo"
 
 Y a tu lado estoy MUY BIEN acompañado  
 Y eres con quien quiero seguir caminando.
@@ -156,31 +167,31 @@ Te Amo ❤️
 
 <script>
 function abrirCarta() {
-    document.getElementById("overlay").style.display = "block";
-    document.getElementById("sobre").style.display = "block";
+    overlay.classList.add("activo");
+    sobre.classList.add("activo");
 
-    // corazones
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 12; i++) {
         let c = document.createElement("div");
         c.className = "corazon";
         c.innerHTML = "❤️";
         c.style.left = Math.random() * 100 + "vw";
-        c.style.bottom = "0";
         document.body.appendChild(c);
         setTimeout(() => c.remove(), 4000);
     }
 
     setTimeout(() => {
-        document.getElementById("sobre").style.display = "none";
-        document.getElementById("carta").style.display = "block";
+        sobre.classList.remove("activo");
+        carta.classList.add("activo");
     }, 1200);
 }
 
 function cerrarCarta() {
-    document.getElementById("overlay").style.display = "none";
-    document.getElementById("carta").style.display = "none";
+    overlay.classList.remove("activo");
+    carta.classList.remove("activo");
 }
 </script>
 
 </body>
 </html>
+
+
