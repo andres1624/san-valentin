@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>San Valentín 💖</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: url("Valentin.png") no-repeat center;
+    background-size: contain;
+    background-color: #f7d9df;
+    font-family: Arial, sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+/* BOTÓN INVISIBLE SOBRE EL SOBRE */
+.boton-carta {
+    position: absolute;
+    width: 22vw;
+    height: 14vw;
+    max-width: 130px;
+    max-height: 90px;
+    top: 58%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+/* OVERLAY */
+.overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 5;
+}
+
+/* SOBRE */
+.sobre {
+    display: none;
+    position: absolute;
+    width: 260px;
+    height: 180px;
+    background: #f1f1f1;
+    border-radius: 10px;
+    z-index: 10;
+    animation: aparecer 0.6s ease;
+}
+
+.tapa {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 50%;
+    background: #e63946;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top;
+    animation: abrir 1s forwards;
+}
+
+@keyframes abrir {
+    to { transform: rotateX(180deg); }
+}
+
+/* CARTA PERGAMINO */
+.carta {
+    display: none;
+    position: absolute;
+    z-index: 15;
+    background: #fdf1c7;
+    border: 2px solid #d4af37;
+    padding: 30px;
+    border-radius: 10px;
+    width: 85%;
+    max-width: 600px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    animation: aparecer 0.8s ease;
+}
+
+.carta p {
+    font-family: "Georgia", serif;
+    color: #5a2a27;
+    font-size: 16px;
+    line-height: 1.6;
+    white-space: pre-line;
+}
+
+/* BOTÓN CERRAR */
+.cerrar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e63946;
+    color: white;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* CORAZONES */
+.corazon {
+    position: absolute;
+    font-size: 20px;
+    animation: flotar 4s linear forwards;
+}
+
+@keyframes flotar {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-100vh); opacity: 0; }
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: scale(0.7); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* CENTRADO */
+.centro {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+</style>
+</head>
+
+<body>
+
+<div class="boton-carta" onclick="abrirCarta()"></div>
+
+<div class="overlay" id="overlay" onclick="cerrarCarta()"></div>
+
+<div class="sobre centro" id="sobre">
+    <div class="tapa"></div>
+</div>
+
+<div class="carta centro" id="carta">
+    <button class="cerrar" onclick="cerrarCarta()">✕</button>
+    <p>
+Muchos dicen: “que es mejor estar solo, que estar mal acompañado”,  
+pero contigo yo digo: "que es mejor estar bien acompañado, que estar solo."
+
+Y a tu lado estoy MUY BIEN acompañado  
+Y eres con quien quiero seguir caminando.
+
+Te Amo ❤️
+    </p>
+</div>
+
+<script>
+function abrirCarta() {
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("sobre").style.display = "block";
+
+    // corazones
+    for (let i = 0; i < 15; i++) {
+        let c = document.createElement("div");
+        c.className = "corazon";
+        c.innerHTML = "❤️";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.bottom = "0";
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
+    }
+
+    setTimeout(() => {
+        document.getElementById("sobre").style.display = "none";
+        document.getElementById("carta").style.display = "block";
+    }, 1200);
+}
+
+function cerrarCarta() {
+    document.getElementById("overlay").style.display = "none";
+    document.getElementById("carta").style.display = "none";
+}
+</script>
+
+</body>
+</html>
